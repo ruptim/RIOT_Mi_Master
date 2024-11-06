@@ -47,7 +47,7 @@ typedef struct {
     void* no_callback;
     void* nc_callback_args;
     void* no_callback_args;
-    bool use_external_pullup;
+    bool use_external_pulldown;
 
 } reed_sensor_driver_params_t;
 
