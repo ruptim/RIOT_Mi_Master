@@ -28,7 +28,7 @@ int reed_sensor_driver_init(reed_sensor_driver_t *dev, const reed_sensor_driver_
 
     dev->params = *params;
 
-    gpio_mode_t mode = params->use_external_pullup ? GPIO_IN : GPIO_IN_PU;
+    gpio_mode_t mode = params->use_external_pulldown ? GPIO_IN : GPIO_IN_PD;
 
     /* Init normally-closed pin */
     if (params->nc_callback != NULL) {
