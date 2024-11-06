@@ -33,10 +33,10 @@ extern "C" {
  * @{
  */
 #ifndef REED_SENSOR_DRIVER_PARAM_NC_PIN
-#define REED_SENSOR_DRIVER_PARAM_NC_PIN GPIO_PIN(0,8)
+#define REED_SENSOR_DRIVER_PARAM_NC_PIN GPIO_PIN (0,8)
 #endif
 #ifndef REED_SENSOR_DRIVER_PARAM_NO_PIN
-#define REED_SENSOR_DRIVER_PARAM_NO_PIN GPIO_PIN(0,6)
+#define REED_SENSOR_DRIVER_PARAM_NO_PIN GPIO_PIN (0,6)
 #endif
 #ifndef REED_SENSOR_DRIVER_PARAM_NC_INT_FLANK 
 #define REED_SENSOR_DRIVER_PARAM_NC_INT_FLANK (GPIO_BOTH)
@@ -56,8 +56,8 @@ extern "C" {
 #ifndef REED_SENSOR_DRIVER_PARAM_NO_CALLBACK_ARGS
 #define REED_SENSOR_DRIVER_PARAM_NO_CALLBACK_ARGS       (NULL)
 #endif
-#ifndef REED_SENSOR_DRIVER_PARAM_USE_EXTERNAL_PULLUP
-#define REED_SENSOR_DRIVER_PARAM_USE_EXTERNAL_PULLUP    (false)
+#ifndef REED_SENSOR_DRIVER_PARAM_USE_EXTERNAL_PULLDOWN
+#define REED_SENSOR_DRIVER_PARAM_USE_EXTERNAL_PULLDOWN    (false)
 #endif
 
 
@@ -70,7 +70,7 @@ extern "C" {
                                                           .no_callback = REED_SENSOR_DRIVER_PARAM_NO_CALLBACK,                  \
                                                           .nc_callback_args = REED_SENSOR_DRIVER_PARAM_NC_CALLBACK_ARGS,        \
                                                           .no_callback_args = REED_SENSOR_DRIVER_PARAM_NO_CALLBACK_ARGS,        \
-                                                          .use_external_pullup = REED_SENSOR_DRIVER_PARAM_USE_EXTERNAL_PULLUP }
+                                                          .use_external_pulldown = REED_SENSOR_DRIVER_PARAM_USE_EXTERNAL_PULLDOWN }
 #endif
 #ifndef REED_SENSOR_DRIVER_NC_INFO
 #define REED_SENSOR_DRIVER_NC_INFO            { .name = "reed_sensor_nc" }
