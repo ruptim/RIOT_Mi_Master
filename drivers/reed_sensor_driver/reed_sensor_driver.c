@@ -26,8 +26,11 @@ int reed_sensor_driver_init(reed_sensor_driver_t *dev, const reed_sensor_driver_
 {
     assert(dev && params);
 
+    dev->params = *params;
+
     gpio_mode_t mode = params->use_external_pullup ? GPIO_IN : GPIO_IN_PU;
 
+    /* Init normally-closed pin */
     if (params->nc_callback != NULL) {
         gpio_init_int(params->nc_pin, mode, params->nc_int_flank, params->nc_callback,
                       params->nc_callback_args);
@@ -35,6 +38,7 @@ int reed_sensor_driver_init(reed_sensor_driver_t *dev, const reed_sensor_driver_
         gpio_init(params->nc_pin, GPIO_IN);
     }
 
+    /* Init normally-open pin */
     if (params->no_callback != NULL) {
         gpio_init_int(params->no_pin, mode, params->no_int_flank, params->no_callback,
                       params->no_callback_args);
@@ -53,7 +57,7 @@ int reed_sensor_driver_read_nc(const reed_sensor_driver_t *dev, reed_sensor_val_
 }
 int reed_sensor_driver_read_no(const reed_sensor_driver_t *dev, reed_sensor_val_t *val){
 
-    *val = (reed_sensor_val_t) gpio_read(dev->params.nc_pin);
+    *val = (reed_sensor_val_t) gpio_read(dev->params.no_pin);
     
     return 0;
 }
