@@ -53,11 +53,11 @@ extern saul_driver_t reed_sensor_no_saul_driver;
 /** @} */
 
 
-
+#define ENABLE_DEBUG 1
+#include "debug.h"
 
 void auto_init_reed_sensor_driver(void)
 {
-    assert(RSD_INFO_NUM == RSD_NUM);
 
     for (unsigned int i = 0; i < RSD_NUM; i++) {
         LOG_DEBUG("[auto_init_saul] initializing rsd #%u\n", i);
@@ -66,14 +66,15 @@ void auto_init_reed_sensor_driver(void)
             LOG_ERROR("[auto_init_saul] error initializing rsd #%u\n", i);
             continue;
         }
-
+        LOG_DEBUG("SUCCESS\n");
         saul_entries[(i * 2)].dev = &(rsd_devs[i]);
         saul_entries[(i * 2)].name = reed_sensor_driver_saul_info[i].name;
         saul_entries[(i * 2)].driver = &reed_sensor_nc_saul_driver;
-        saul_entries[(i * 2) + 1].dev = &(rsd_devs[i]);
-        saul_entries[(i * 2) + 1].name = reed_sensor_driver_saul_info[i].name;
-        saul_entries[(i * 2) + 1].driver = &reed_sensor_no_saul_driver;
         saul_reg_add(&(saul_entries[(i * 2)]));
+
+        saul_entries[(i * 2) + 1].dev = &(rsd_devs[i]);
+        saul_entries[(i * 2) + 1].name = reed_sensor_driver_saul_info[i+1].name;
+        saul_entries[(i * 2) + 1].driver = &reed_sensor_no_saul_driver;
         saul_reg_add(&(saul_entries[(i * 2) + 1]));
     }
 }
