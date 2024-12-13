@@ -35,9 +35,13 @@ extern "C" {
 #define DWAX509M183X0_PARAM_PARAM1
 #endif
 
-#ifndef DWAX509M183X0_PARAMS
-#define DWAX509M183X0_PARAMS
+#ifndef DWAX509M183x0_PARAMS
+#define DWAX509M183x0_PARAMS { \
+                           .adc_line = 0, \
+                           .resolution = ADC_RES_10BIT, \
+                        }
 #endif
+
 /**@}*/
 
 /**
