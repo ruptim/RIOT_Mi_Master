@@ -31,9 +31,8 @@ static int read_nc(const void *dev, phydat_t *res)
     reed_sensor_driver_read_nc(d,&val);
 
     res->val[0] = val;
-    res->unit = UNIT_NONE; 
+    res->unit = UNIT_NONE;
     res->scale = 0;
-    
     return 1;
 }
 
@@ -44,9 +43,8 @@ static int read_no(const void *dev, phydat_t *res)
     reed_sensor_driver_read_no(d,&val);
 
     res->val[0] = val;
-    res->unit = UNIT_NONE; 
+    res->unit = UNIT_NONE;
     res->scale = 0;
-    
     return 1;
 }
 

@@ -67,7 +67,7 @@ int reed_sensor_driver_read_no(const reed_sensor_driver_t *dev, reed_sensor_val_
 }
 
 void reed_sensor_driver_read_no_defaul_callback(void *args)
-{   
+{
     reed_sensor_driver_params_t* params = (reed_sensor_driver_params_t*) args;
 
     static ztimer_now_t no_debounce_ts = 0;
@@ -83,7 +83,7 @@ void reed_sensor_driver_read_no_defaul_callback(void *args)
 }
 
 void reed_sensor_driver_read_nc_defaul_callback(void *args)
-{   
+{
     reed_sensor_driver_params_t* params = (reed_sensor_driver_params_t*) args;
 
     static ztimer_now_t nc_debounce_ts = 0;
@@ -97,4 +97,3 @@ void reed_sensor_driver_read_nc_defaul_callback(void *args)
         (params->nc_callback)(params->nc_callback_args);
     }
 }
-
