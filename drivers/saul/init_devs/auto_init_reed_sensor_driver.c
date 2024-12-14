@@ -16,8 +16,6 @@
  * @}
  */
 
-
-#include "assert.h"
 #include "log.h"
 #include "saul_reg.h"
 #include "reed_sensor_driver.h"
@@ -26,7 +24,7 @@
 /**
  * @brief   Define the number of configured sensors
  */
-#define RSD_NUM     ARRAY_SIZE(reed_sensor_driver_params)
+#define RSD_NUM ARRAY_SIZE(reed_sensor_driver_params)
 
 /**
  * @brief   Allocate memory for the device descriptors
@@ -53,12 +51,8 @@ extern saul_driver_t reed_sensor_no_saul_driver;
 /** @} */
 
 
-#define ENABLE_DEBUG 1
-#include "debug.h"
-
 void auto_init_reed_sensor_driver(void)
 {
-
     for (unsigned int i = 0; i < RSD_NUM; i++) {
         LOG_DEBUG("[auto_init_saul] initializing rsd #%u\n", i);
 
@@ -73,7 +67,7 @@ void auto_init_reed_sensor_driver(void)
         saul_reg_add(&(saul_entries[(i * 2)]));
 
         saul_entries[(i * 2) + 1].dev = &(rsd_devs[i]);
-        saul_entries[(i * 2) + 1].name = reed_sensor_driver_saul_info[i+1].name;
+        saul_entries[(i * 2) + 1].name = reed_sensor_driver_saul_info[i + 1].name;
         saul_entries[(i * 2) + 1].driver = &reed_sensor_no_saul_driver;
         saul_reg_add(&(saul_entries[(i * 2) + 1]));
     }

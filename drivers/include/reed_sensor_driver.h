@@ -23,6 +23,7 @@
 
 /* Add header includes here */
 #include "periph/gpio.h"
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -43,11 +44,12 @@ typedef struct {
     gpio_t no_pin;
     gpio_flank_t nc_int_flank;
     gpio_flank_t no_int_flank;
-    void* nc_callback;
-    void* no_callback;
+    void (* nc_callback)(void*);
+    void (*no_callback)(void*);
     void* nc_callback_args;
     void* no_callback_args;
     bool use_external_pulldown;
+    uint32_t debounce_ms;
 
 } reed_sensor_driver_params_t;
 
@@ -91,6 +93,29 @@ int reed_sensor_driver_read_nc(const reed_sensor_driver_t *dev, reed_sensor_val_
  * @return                  0 on success
  */
 int reed_sensor_driver_read_no(const reed_sensor_driver_t *dev, reed_sensor_val_t *val);
+
+/**
+ * @brief   Default callback function for normally-open pin for debouncing.
+ *          
+ *
+ * @param[in]       args    Arguments for callback function
+ *
+ * @return                  0 on success
+ */
+void reed_sensor_driver_read_no_defaul_callback(void* args);
+
+/**
+ * @brief   Default callback function for normally-closed pin for debouncing.
+ *          
+ *
+ * @param[in]       args    Arguments for callback function
+ *
+ * @return                  0 on success
+ */
+void reed_sensor_driver_read_nc_defaul_callback(void* args);
+
+
+
 
 #ifdef __cplusplus
 }
