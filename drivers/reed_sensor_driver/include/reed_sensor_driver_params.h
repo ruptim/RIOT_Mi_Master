@@ -29,42 +29,42 @@ extern "C" {
 #endif
 
 /**
- * @name    Set default configuration parameters
+ * @name    Default comfiguration parameters for reed sensor driver
  * @{
  */
 #ifndef REED_SENSOR_DRIVER_PARAM_NC_PIN
-#define REED_SENSOR_DRIVER_PARAM_NC_PIN GPIO_PIN(0, 8)
+#define REED_SENSOR_DRIVER_PARAM_NC_PIN GPIO_PIN(0, 8)          /**< default NC pin */
 #endif
 #ifndef REED_SENSOR_DRIVER_PARAM_NO_PIN
-#define REED_SENSOR_DRIVER_PARAM_NO_PIN GPIO_PIN(0, 6)
+#define REED_SENSOR_DRIVER_PARAM_NO_PIN GPIO_PIN(0, 6)          /**< default NO pin */
 #endif
 #ifndef REED_SENSOR_DRIVER_PARAM_NC_INT_FLANK
-#define REED_SENSOR_DRIVER_PARAM_NC_INT_FLANK (GPIO_BOTH)
+#define REED_SENSOR_DRIVER_PARAM_NC_INT_FLANK (GPIO_BOTH)       /**< default NC flank */
 #endif
 #ifndef REED_SENSOR_DRIVER_PARAM_NO_INT_FLANK
-#define REED_SENSOR_DRIVER_PARAM_NO_INT_FLANK (GPIO_BOTH)
+#define REED_SENSOR_DRIVER_PARAM_NO_INT_FLANK (GPIO_BOTH)       /**< default NC flank */
 #endif
 #ifndef REED_SENSOR_DRIVER_PARAM_NC_CALLBACK
-#define REED_SENSOR_DRIVER_PARAM_NC_CALLBACK (NULL)
+#define REED_SENSOR_DRIVER_PARAM_NC_CALLBACK (NULL)             /**< no NO callback by default */
 #endif
 #ifndef REED_SENSOR_DRIVER_PARAM_NO_CALLBACK
-#define REED_SENSOR_DRIVER_PARAM_NO_CALLBACK (NULL)
+#define REED_SENSOR_DRIVER_PARAM_NO_CALLBACK (NULL)             /**< no NC callback by default */
 #endif
 #ifndef REED_SENSOR_DRIVER_PARAM_NC_CALLBACK_ARGS
-#define REED_SENSOR_DRIVER_PARAM_NC_CALLBACK_ARGS (NULL)
+#define REED_SENSOR_DRIVER_PARAM_NC_CALLBACK_ARGS (NULL)        /**< no NO callback args by default */
 #endif
 #ifndef REED_SENSOR_DRIVER_PARAM_NO_CALLBACK_ARGS
-#define REED_SENSOR_DRIVER_PARAM_NO_CALLBACK_ARGS (NULL)
+#define REED_SENSOR_DRIVER_PARAM_NO_CALLBACK_ARGS (NULL)        /**< no NO callback args by default */
 #endif
 #ifndef REED_SENSOR_DRIVER_PARAM_USE_EXTERNAL_PULLDOWN
-#define REED_SENSOR_DRIVER_PARAM_USE_EXTERNAL_PULLDOWN (false)
+#define REED_SENSOR_DRIVER_PARAM_USE_EXTERNAL_PULLDOWN (false)  /**< no external pulldown by default */
 #endif
 #ifndef REED_SENSOR_DRIVER_PARAM_DEBOUNCE_MS
-#define REED_SENSOR_DRIVER_PARAM_DEBOUNCE_MS (20)
+#define REED_SENSOR_DRIVER_PARAM_DEBOUNCE_MS (20)               /**< 20 ms debounce delay by default */
 #endif
 
 #ifndef REED_SENSOR_DRIVER_PARAMS
-#define REED_SENSOR_DRIVER_PARAMS                                                  \
+#define REED_SENSOR_DRIVER_PARAMS                                                    \
         {                                                                            \
             .nc_pin = REED_SENSOR_DRIVER_PARAM_NC_PIN,                               \
             .no_pin = REED_SENSOR_DRIVER_PARAM_NO_PIN,                               \
@@ -75,13 +75,14 @@ extern "C" {
             .nc_callback_args = REED_SENSOR_DRIVER_PARAM_NC_CALLBACK_ARGS,           \
             .no_callback_args = REED_SENSOR_DRIVER_PARAM_NO_CALLBACK_ARGS,           \
             .use_external_pulldown = REED_SENSOR_DRIVER_PARAM_USE_EXTERNAL_PULLDOWN, \
-            .debounce_ms = REED_SENSOR_DRIVER_PARAM_DEBOUNCE_MS }
+            .debounce_ms = REED_SENSOR_DRIVER_PARAM_DEBOUNCE_MS }   /**< default driver params */
 #endif
 #ifndef REED_SENSOR_DRIVER_NC_INFO
-#define REED_SENSOR_DRIVER_NC_INFO { .name = "reed_sensor_nc" }
+#define REED_SENSOR_DRIVER_NC_INFO { .name = "reed_sensor_nc" }     /**< saul device name for NO pin */
 #endif
+
 #ifndef REED_SENSOR_DRIVER_NO_INFO
-#define REED_SENSOR_DRIVER_NO_INFO { .name = "reed_sensor_no" }
+#define REED_SENSOR_DRIVER_NO_INFO { .name = "reed_sensor_no" }     /**< saul device name for NC pin */
 #endif
 /**@}*/
 
