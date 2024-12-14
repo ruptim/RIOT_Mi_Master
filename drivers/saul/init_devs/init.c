@@ -263,6 +263,10 @@ void saul_init_devs(void)
         extern void auto_init_qmc5883l(void);
         auto_init_qmc5883l();
     }
+    if (IS_USED(MODULE_REED_SENSOR_DRIVER)) {
+        extern void auto_init_reed_sensor_driver(void);
+        auto_init_reed_sensor_driver();
+    }
     if (IS_USED(MODULE_SCD30)) {
         extern void auto_init_scd30(void);
         auto_init_scd30();
