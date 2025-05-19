@@ -22,9 +22,14 @@
 #include "dwax509m183x0_constants.h"
 #include "dwax509m183x0_params.h"
 
-static float dwax509m183x0_response_curve(float const voltage)
-{
 
+float dwax509m183x0_init_response_linear(float voltage)
+{
+    return voltage;
+}
+
+float dwax509m183x0_init_response_poly3(float voltage)
+{
     float const voltage_2 = voltage * voltage;
     float const voltage_3 = voltage_2 * voltage;
 
@@ -58,30 +63,6 @@ static int adc_bits_to_resulution(int adc_bits)
     return -1;
 }
 
-static int convert_adc_to_distance_um(int const adc_raw, int const adc_resolution)
-{
-
-    float const dwax_voltage_out = ((float)adc_raw / (float)(adc_resolution - 1)) * DWAX509M183X0_MAX_VOLTAGE_OUTPUT;
-
-    if (dwax_voltage_out < 0 || dwax_voltage_out > DWAX509M183X0_MAX_VOLTAGE_OUTPUT) {
-        printf("[ERROR]: Voltage out of range: %f V\n", dwax_voltage_out);
-        return -1;
-    }
-
-
-    float const distance_mm = dwax509m183x0_response_curve(dwax_voltage_out);
-
-    if (distance_mm < 0) {
-        printf("[ERROR]: Computed distance is negative: %f mm\n", distance_mm);
-        return -1;
-    }
-
-    // Convert distance to micrometers and return as an integer
-    int const distance_um_pruned = (int)(distance_mm * 1000.f);
-
-    return distance_um_pruned;
-}
-
 int dwax509m183x0_init(dwax509m183x0_t* dev, const dwax509m183x0_params_t* params)
 {
     *dev = *params;
@@ -97,16 +78,27 @@ int dwax509m183x0_init(dwax509m183x0_t* dev, const dwax509m183x0_params_t* param
     return 0; 
 }
 
-int dwax509m183x0_distance_um(dwax509m183x0_t* dev)
+float dwax509m183x0_get_distance(dwax509m183x0_t* dev) 
 {
     int const sample_raw = adc_sample(dev->adc_line, dev->resolution);
 
-    int const distance_um = convert_adc_to_distance_um(
-                                sample_raw, adc_bits_to_resulution(dev->resolution)
-                            );
+    // use linear interpolation to map reading from [sensor_near, sensor_far] -> [0, dwax voltage max] (ideal values)
+    float const voltage_raw = sample_raw / adc_bits_to_resulution(dev->resolution);
+    float const voltage = (voltage_raw - dev->sensor_voltage_near) * DWAX509M183X0_VOLTAGE_MAX / (dev->sensor_voltage_far - dev->sensor_voltage_near);
 
-    return distance_um;
+    // convert voltage to distance
+    float const distance = dev->fn_res_curve(voltage);
+
+    return distance;
 }
 
+dwax509m183x0_sample_raw_t dwax509m183x0_get_raw(dwax509m183x0_t* dev)
+{
+    dwax509m183x0_sample_raw_t result = {0};
+   
+    int const reading = adc_sample(dev->adc_line, dev->resolution);
+    result.value = reading >= 0 ?  reading : 0;
+    result.max = adc_bits_to_resulution(dev->resolution);
 
-
+    return result;
+}

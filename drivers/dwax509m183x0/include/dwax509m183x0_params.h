@@ -31,6 +31,9 @@ extern "C" {
  * @name    Set default configuration parameters
  * @{
  */
+
+#define DWAX509M183X0_VOLTAGE_MAX 10.0f
+
 #ifndef DWAX509M183X0_PARAM_PARAM1
 #define DWAX509M183X0_PARAM_PARAM1
 #endif
@@ -39,6 +42,9 @@ extern "C" {
 #define DWAX509M183X0_PARAMS { \
                            .adc_line = 0, \
                            .resolution = ADC_RES_10BIT, \
+                           .fn_res_curve = dwax509m183x0_init_response_poly3, \
+                           .sensor_voltage_near = 0.0f, \
+                           .sensor_voltage_far = DWAX509M183X0_VOLTAGE_MAX, \
                         }
 #endif
 

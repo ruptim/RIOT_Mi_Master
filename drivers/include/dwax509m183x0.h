@@ -23,6 +23,7 @@
 
 /* Add header includes here */
 #include "periph/adc.h"
+#include <sys/types.h>
 
 #define DWAX509M183X0_MAX_VOLTAGE_OUTPUT 10
 
@@ -35,10 +36,25 @@ extern "C" {
 /**
  * @brief   Device initialization parameters
  */
+
+typedef float(*dwax509m183x0_response_curve_t)(float);
+
 typedef struct {
     adc_t adc_line;
     adc_res_t resolution;
+    dwax509m183x0_response_curve_t fn_res_curve;
+    float sensor_voltage_near;
+    float sensor_voltage_far;
+
 } dwax509m183x0_params_t;
+
+typedef struct {
+    unsigned int value;
+    unsigned int max;
+
+} dwax509m183x0_sample_raw_t;
+
+
 
 /**
  * @brief   Device descriptor for the driver
@@ -54,7 +70,16 @@ typedef dwax509m183x0_params_t dwax509m183x0_t;
  * @return                  0 on success
  */
 int dwax509m183x0_init(dwax509m183x0_t *dev, const dwax509m183x0_params_t *params);
-int dwax509m183x0_distance_um(dwax509m183x0_t* dev);
+
+float dwax509m183x0_get_distance(dwax509m183x0_t* dev);
+
+float dwax509m183x0_init_response_linear(float voltage);
+float dwax509m183x0_init_response_poly3(float voltage);
+
+
+
+dwax509m183x0_sample_raw_t dwax509m183x0_get_raw(dwax509m183x0_t* dev);
+
 
 #ifdef __cplusplus
 }
