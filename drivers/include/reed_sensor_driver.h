@@ -24,6 +24,7 @@
 /* Add header includes here */
 #  include "periph/gpio.h"
 #  include <stdint.h>
+#  include "ztimer.h"
 
 #  ifdef __cplusplus
 extern "C" {
@@ -48,6 +49,9 @@ typedef struct {
     void *no_callback_args;         /**< interrupt callback for nc */
     bool use_external_pulldown;     /**< flag to disable use of internal pulldown */
     uint32_t debounce_ms;           /**< debounce delay in ms */
+    ztimer_now_t nc_debounce_ts;    /**< last debounce timestamp for nc */
+    ztimer_now_t no_debounce_ts;    /**< last debounce timestamp for nc */
+
 
 } reed_sensor_driver_params_t;
 
