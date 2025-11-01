@@ -58,8 +58,16 @@ static int _adc_resolution(adc_res_t res)
 
 static int32_t _voltage_fp(int32_t adc_val, int32_t adc_max)
 {
+    /* ADC value to voltage after divider (0-3.3V) */
     int32_t vref_fp = TO_FP(DWAS509_VREF);
-    return (int32_t)(((int64_t)adc_val * vref_fp) / (adc_max - 1));
+    int32_t voltage_after_divider_fp = (int32_t)(((int64_t)adc_val * vref_fp) / (adc_max - 1));
+
+    /* Scale back to original sensor voltage (0.4-11.4V) */
+    int32_t divider_ratio_fp = TO_FP(DWAS509_VOLTAGE_DIVIDER_RATIO);
+    int32_t sensor_voltage_fp =
+        (int32_t)(((int64_t)voltage_after_divider_fp * divider_ratio_fp) >> FP_SHIFT);
+
+    return sensor_voltage_fp;
 }
 
 int32_t dwas509_default_response_curve(int32_t v_fp)
