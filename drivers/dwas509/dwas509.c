@@ -24,6 +24,7 @@
 
 #include "dwas509.h"
 #include "dwas509_constants.h"
+#include "ztimer.h"
 
 /* Fixed-point shift (Q16.16 format) */
 #define FP_SHIFT 16
@@ -153,7 +154,7 @@ int dwas509_read_um_median(const dwas509_t *dev, uint8_t samples, uint32_t delay
         buffer[i] = reading;
 
         if (i < samples - 1 && delay_us > 0) {
-            xtimer_usleep(delay_us);
+            ztimer_sleep(ZTIMER_USEC, delay_us);
         }
     }
 
