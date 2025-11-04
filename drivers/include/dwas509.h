@@ -96,6 +96,22 @@ int dwas509_init(dwas509_t *dev, const dwas509_params_t *params);
 int dwas509_read_um(const dwas509_t *dev);
 
 /**
+ * @brief   Read distance in micrometers with median filtering
+ *
+ * Takes multiple samples and returns the median value to reduce noise
+ * and reject outliers.
+ *
+ * @param[in]   dev         Device descriptor
+ * @param[in]   samples     Number of samples to take (must be > 0)
+ * @param[in]   delay_us    Delay between samples in microseconds
+ *
+ * @return      Median distance in micrometers (0-10000)
+ * @retval      -EINVAL     Invalid number of samples
+ * @retval      -EIO        ADC sampling failed
+ */
+int dwas509_read_um_median(const dwas509_t *dev, uint8_t samples, uint32_t delay_us);
+
+/**
   * @brief   Read distance in millimeters
   *
   * @param[in]   dev         Device descriptor

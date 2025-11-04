@@ -130,6 +130,54 @@ int dwas509_read_um(const dwas509_t *dev)
     return dev->params.response_curve(v_fp);
 }
 
+int dwas509_read_um_median(const dwas509_t *dev, uint8_t samples, uint32_t delay_us)
+{
+    assert(dev);
+
+    if (samples == 0) {
+        return -EINVAL;
+    }
+
+    if (samples == 1) {
+        return dwas509_read_um(dev);
+    }
+
+    int32_t buffer[samples];
+
+    /* Collect samples */
+    for (uint8_t i = 0; i < samples; i++) {
+        int32_t reading = dwas509_read_um(dev);
+        if (reading < 0) {
+            return reading;
+        }
+        buffer[i] = reading;
+
+        if (i < samples - 1 && delay_us > 0) {
+            xtimer_usleep(delay_us);
+        }
+    }
+
+    /* Simple insertion sort */
+    for (uint8_t i = 1; i < samples; i++) {
+        int32_t key = buffer[i];
+        int8_t j = i - 1;
+        while (j >= 0 && buffer[j] > key) {
+            buffer[j + 1] = buffer[j];
+            j--;
+        }
+        buffer[j + 1] = key;
+    }
+
+    /* Return median */
+    if (samples & 1) {
+        return buffer[samples >> 1];
+    }
+    else {
+        uint8_t mid = samples >> 1;
+        return (buffer[mid - 1] + buffer[mid]) >> 1;
+    }
+}
+
 int dwas509_read_mm(const dwas509_t *dev)
 {
     assert(dev);
