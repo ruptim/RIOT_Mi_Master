@@ -23,7 +23,6 @@
 #include "reed_sensor_driver_params.h"
 
 
-
 int reed_sensor_driver_init(reed_sensor_driver_t *dev, const reed_sensor_driver_params_t *params)
 {
     assert(dev && params);
