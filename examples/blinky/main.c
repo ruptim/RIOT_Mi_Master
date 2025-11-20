@@ -26,8 +26,6 @@
 #include "timex.h"
 #include "ztimer.h"
 
-#include "dwas509.h"
-
 static void delay(void)
 {
     if (IS_USED(MODULE_ZTIMER)) {
@@ -45,8 +43,7 @@ static void delay(void)
          * optimize it out - but here the wasting of CPU cycles is desired.
          */
         uint32_t loops = coreclk() / 20;
-        for (volatile uint32_t i = 0; i < loops; i++) {
-        }
+        for (volatile uint32_t i = 0; i < loops; i++) { }
     }
 }
 
