@@ -21,7 +21,6 @@
 #include "reed_sensor_driver.h"
 #include "reed_sensor_driver_constants.h"
 #include "reed_sensor_driver_params.h"
-#include "ztimer.h"
 
 
 int reed_sensor_driver_init(reed_sensor_driver_t *dev, const reed_sensor_driver_params_t *params)
@@ -70,14 +69,13 @@ void reed_sensor_driver_read_no_defaul_callback(void *args)
 {
     reed_sensor_driver_params_t* params = (reed_sensor_driver_params_t*) args;
 
-    static ztimer_now_t no_debounce_ts = 0;
 
     ztimer_acquire(ZTIMER_MSEC);
     ztimer_now_t cur_ts = ztimer_now(ZTIMER_MSEC);
     ztimer_release(ZTIMER_MSEC);
 
-    if (cur_ts - no_debounce_ts >= params->debounce_ms){
-        no_debounce_ts = cur_ts;
+    if (cur_ts - params->no_debounce_ts >= params->debounce_ms){
+        params->no_debounce_ts = cur_ts;
         (params->no_callback)(params->no_callback_args);
     }
 }
@@ -86,14 +84,13 @@ void reed_sensor_driver_read_nc_defaul_callback(void *args)
 {
     reed_sensor_driver_params_t* params = (reed_sensor_driver_params_t*) args;
 
-    static ztimer_now_t nc_debounce_ts = 0;
 
     ztimer_acquire(ZTIMER_MSEC);
     ztimer_now_t cur_ts = ztimer_now(ZTIMER_MSEC);
     ztimer_release(ZTIMER_MSEC);
 
-    if (cur_ts - nc_debounce_ts >= params->debounce_ms){
-        nc_debounce_ts = cur_ts;
+    if (cur_ts - params->nc_debounce_ts >= params->debounce_ms){
+        params->nc_debounce_ts = cur_ts;
         (params->nc_callback)(params->nc_callback_args);
     }
 }
