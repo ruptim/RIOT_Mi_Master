@@ -39,18 +39,20 @@ typedef uint8_t reed_sensor_val_t;
  * @brief   Device initialization parameters
  */
 typedef struct {
-    gpio_t nc_pin;                  /**< normaly-closed pin */
-    gpio_t no_pin;                  /**< normaly-open pin */
-    gpio_flank_t nc_int_flank;      /**< interrupt flank for nc pin */
-    gpio_flank_t no_int_flank;      /**< interrupt flank for no pin */
-    void (*nc_callback)(void *);    /**< interrupt callback for no */
-    void (*no_callback)(void *);    /**< interrupt callback for nc */
-    void *nc_callback_args;         /**< callback arguments for no */
-    void *no_callback_args;         /**< interrupt callback for nc */
-    bool use_external_pulldown;     /**< flag to disable use of internal pulldown */
-    uint32_t debounce_ms;           /**< debounce delay in ms */
-    ztimer_now_t nc_debounce_ts;    /**< last debounce timestamp for nc */
-    ztimer_now_t no_debounce_ts;    /**< last debounce timestamp for nc */
+    gpio_t nc_pin;                      /**< normaly-closed pin */
+    gpio_t no_pin;                      /**< normaly-open pin */
+    bool nc_pin_used;                   /**< normaly-closed pin is used */
+    bool no_pin_used;                   /**< normaly-open pin is used*/
+    gpio_flank_t nc_int_flank;          /**< interrupt flank for nc pin */
+    gpio_flank_t no_int_flank;          /**< interrupt flank for no pin */
+    void (*nc_callback)(void *);        /**< interrupt callback for no */
+    void (*no_callback)(void *);        /**< interrupt callback for nc */
+    void *nc_callback_args;             /**< callback arguments for no */
+    void *no_callback_args;             /**< interrupt callback for nc */
+    bool use_external_pulldown;         /**< flag to disable use of internal pulldown */
+    uint32_t debounce_ms;               /**< debounce delay in ms */
+    ztimer_now_t nc_debounce_ts;        /**< last debounce timestamp for nc */
+    ztimer_now_t no_debounce_ts;        /**< last debounce timestamp for nc */
 
 
 } reed_sensor_driver_params_t;

@@ -22,7 +22,6 @@
 #include "reed_sensor_driver_constants.h"
 #include "reed_sensor_driver_params.h"
 
-
 int reed_sensor_driver_init(reed_sensor_driver_t *dev, const reed_sensor_driver_params_t *params)
 {
     assert(dev && params);
@@ -32,23 +31,26 @@ int reed_sensor_driver_init(reed_sensor_driver_t *dev, const reed_sensor_driver_
     gpio_mode_t mode = params->use_external_pulldown ? GPIO_IN : GPIO_IN_PD;
 
     /* Init normally-closed pin */
-    if (params->nc_callback != NULL) {
-        gpio_init_int(params->nc_pin, mode, params->nc_int_flank, reed_sensor_driver_read_nc_defaul_callback,
-                      (void*) params);
-    }
-    else {
-        gpio_init(params->nc_pin, mode);
+    if (params->nc_pin_used) {
+        if (params->nc_callback != NULL) {
+            gpio_init_int(params->nc_pin, mode, params->nc_int_flank, reed_sensor_driver_read_nc_defaul_callback,
+                          (void *)params);
+        }
+        else {
+            gpio_init(params->nc_pin, GPIO_IN_PD);
+        }
     }
 
     /* Init normally-open pin */
-    if (params->no_callback != NULL) {
-        gpio_init_int(params->no_pin, mode, params->no_int_flank, reed_sensor_driver_read_no_defaul_callback,
-                      (void *)params);
+    if (params->no_pin_used) {
+        if (params->no_callback != NULL) {
+            gpio_init_int(params->no_pin, mode, params->no_int_flank, reed_sensor_driver_read_no_defaul_callback,
+                          (void *)params);
+        }
+        else {
+            gpio_init(params->no_pin, GPIO_IN_PD);
+        }
     }
-    else {
-        gpio_init(params->no_pin, mode);
-    }
-
     return 0;
 }
 
@@ -67,14 +69,13 @@ int reed_sensor_driver_read_no(const reed_sensor_driver_t *dev, reed_sensor_val_
 
 void reed_sensor_driver_read_no_defaul_callback(void *args)
 {
-    reed_sensor_driver_params_t* params = (reed_sensor_driver_params_t*) args;
-
+    reed_sensor_driver_params_t *params = (reed_sensor_driver_params_t *)args;
 
     ztimer_acquire(ZTIMER_MSEC);
     ztimer_now_t cur_ts = ztimer_now(ZTIMER_MSEC);
     ztimer_release(ZTIMER_MSEC);
 
-    if (cur_ts - params->no_debounce_ts >= params->debounce_ms){
+    if (cur_ts - params->no_debounce_ts >= params->debounce_ms) {
         params->no_debounce_ts = cur_ts;
         (params->no_callback)(params->no_callback_args);
     }
@@ -82,14 +83,13 @@ void reed_sensor_driver_read_no_defaul_callback(void *args)
 
 void reed_sensor_driver_read_nc_defaul_callback(void *args)
 {
-    reed_sensor_driver_params_t* params = (reed_sensor_driver_params_t*) args;
-
+    reed_sensor_driver_params_t *params = (reed_sensor_driver_params_t *)args;
 
     ztimer_acquire(ZTIMER_MSEC);
     ztimer_now_t cur_ts = ztimer_now(ZTIMER_MSEC);
     ztimer_release(ZTIMER_MSEC);
 
-    if (cur_ts - params->nc_debounce_ts >= params->debounce_ms){
+    if (cur_ts - params->nc_debounce_ts >= params->debounce_ms) {
         params->nc_debounce_ts = cur_ts;
         (params->nc_callback)(params->nc_callback_args);
     }
