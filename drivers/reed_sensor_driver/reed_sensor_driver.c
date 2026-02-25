@@ -37,7 +37,7 @@ int reed_sensor_driver_init(reed_sensor_driver_t *dev, const reed_sensor_driver_
                           (void *)params);
         }
         else {
-            gpio_init(params->nc_pin, GPIO_IN);
+            gpio_init(params->nc_pin, GPIO_IN_PD);
         }
     }
 
